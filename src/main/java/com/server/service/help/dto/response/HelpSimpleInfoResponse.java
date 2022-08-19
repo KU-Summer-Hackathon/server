@@ -11,6 +11,8 @@ import lombok.*;
 @Builder(access = AccessLevel.PRIVATE)
 public class HelpSimpleInfoResponse {
 
+    private Long helpId;
+
     private String userImageUrl;
 
     private String userName;
@@ -19,6 +21,7 @@ public class HelpSimpleInfoResponse {
 
     public static HelpSimpleInfoResponse of(Onboarding onboarding, Help help) {
         return HelpSimpleInfoResponse.builder()
+                .helpId(help.getId())
                 .userImageUrl(onboarding.getImageUrl())
                 .userName(onboarding.getName())
                 .content(help.getContent())

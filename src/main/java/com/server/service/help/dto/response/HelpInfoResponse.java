@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @Builder(access = AccessLevel.PRIVATE)
 public class HelpInfoResponse {
 
+    private Long helpId;
+
     private String userImageUrl;
 
     private String userName;
@@ -27,6 +29,7 @@ public class HelpInfoResponse {
 
     public static HelpInfoResponse of(Onboarding onboarding, Help help, boolean isApplied) {
         return HelpInfoResponse.builder()
+                .helpId(help.getId())
                 .userImageUrl(onboarding.getImageUrl())
                 .userName(onboarding.getName())
                 .content(help.getContent())
