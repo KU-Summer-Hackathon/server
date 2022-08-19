@@ -27,19 +27,25 @@ public class User extends AuditingTimeEntity {
     @JoinColumn(name = "onboarding_id")
     private Onboarding onboarding;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_sub_info_id")
+    private UserSubInfo userSubInfo;
+
     @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    private User(String socialId, UserSocialType socialType, String fcmToken, Onboarding onboarding) {
+
+    private User(String socialId, UserSocialType socialType, String fcmToken, Onboarding onboarding, UserSubInfo userSubInfo) {
         this.socialInfo = SocialInfo.of(socialId, socialType);
         this.fcmToken = fcmToken;
         this.onboarding = onboarding;
+        this.userSubInfo = userSubInfo;
         this.status = UserStatus.ACTIVE;
     }
 
-    public static User newInstance(String socialId, UserSocialType socialType, String fcmToken, Onboarding onboarding) {
-        return new User(socialId, socialType, fcmToken, onboarding);
+    public static User newInstance(String socialId, UserSocialType socialType, String fcmToken, Onboarding onboarding, UserSubInfo userSubInfo) {
+        return new User(socialId, socialType, fcmToken, onboarding, userSubInfo);
     }
 
     public void updateFcmToken(String fcmToken) {
