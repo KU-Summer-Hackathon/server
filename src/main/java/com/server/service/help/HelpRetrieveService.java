@@ -1,10 +1,12 @@
 package com.server.service.help;
 
+import com.server.domain.help.Help;
 import com.server.domain.help.repository.HelpRepository;
 import com.server.domain.user.User;
 import com.server.domain.user.repository.UserRepository;
 import com.server.service.help.dto.response.GetHelpsResponse;
 import com.server.service.help.dto.response.HelpInfoResponse;
+import com.server.service.help.dto.response.HelpSimpleInfoResponse;
 import com.server.service.user.UserServiceUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,5 +30,10 @@ public class HelpRetrieveService {
                         .map(help -> HelpInfoResponse.of(user.getOnboarding(), help))
                         .collect(Collectors.toList())
         );
+    }
+
+    public HelpSimpleInfoResponse retrieveHelpById(Long helpId) {
+        Help help = helpRepository.findHelpById(helpId);
+        return HelpSimpleInfoResponse.of(help.getOnboarding(), help);
     }
 }
