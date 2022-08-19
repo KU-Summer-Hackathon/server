@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface HelpRepositoryCustom {
 
+    Help findHelpById(Long helpId);
+
     List<Help> findOtherHelps(Onboarding onboarding);
 }
