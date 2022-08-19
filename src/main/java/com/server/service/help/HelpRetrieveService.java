@@ -2,6 +2,7 @@ package com.server.service.help;
 
 import com.server.domain.help.Help;
 import com.server.domain.help.repository.HelpRepository;
+import com.server.domain.push.repository.PushRepository;
 import com.server.domain.user.User;
 import com.server.domain.user.repository.UserRepository;
 import com.server.service.help.dto.response.GetHelpsResponse;
@@ -21,13 +22,14 @@ public class HelpRetrieveService {
 
     private final UserRepository userRepository;
     private final HelpRepository helpRepository;
+    private final PushRepository pushRepository;
 
     public GetHelpsResponse retrieveHelp(Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         return GetHelpsResponse.of(
                 user.getOnboarding().getAddress(),
                 helpRepository.findOtherHelps(user.getOnboarding()).stream()
-                        .map(help -> HelpInfoResponse.of(user.getOnboarding(), help))
+                        .map(help -> HelpInfoResponse.of(user.getOnboarding(), help, pushRepository.helpIsApplied(user.getId(), help)))
                         .collect(Collectors.toList())
         );
     }

@@ -23,7 +23,9 @@ public class HelpInfoResponse {
 
     private List<String> helpImageUrls;
 
-    public static HelpInfoResponse of(Onboarding onboarding, Help help) {
+    private boolean isApplied;
+
+    public static HelpInfoResponse of(Onboarding onboarding, Help help, boolean isApplied) {
         return HelpInfoResponse.builder()
                 .userImageUrl(onboarding.getImageUrl())
                 .userName(onboarding.getName())
@@ -32,6 +34,7 @@ public class HelpInfoResponse {
                         .map(HelpImage::getImageUrl)
                         .collect(Collectors.toList())
                 )
+                .isApplied(isApplied)
                 .build();
     }
 }
