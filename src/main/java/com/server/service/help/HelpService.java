@@ -10,7 +10,6 @@ import com.server.domain.message.repository.MessageRepository;
 import com.server.domain.user.User;
 import com.server.domain.user.UserSubInfo;
 import com.server.domain.user.repository.UserRepository;
-import com.server.domain.user.repository.UserSubInfoRepository;
 import com.server.service.firebase.FirebaseCloudMessageService;
 import com.server.service.help.dto.request.CreateHelpRequestDto;
 import com.server.service.user.UserServiceUtils;
@@ -28,7 +27,6 @@ import java.util.List;
 public class HelpService {
 
     private final UserRepository userRepository;
-    private final UserSubInfoRepository userSubInfoRepository;
     private final HelpRepository helpRepository;
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
@@ -38,11 +36,9 @@ public class HelpService {
     @Transactional
     public boolean createHelp(CreateHelpRequestDto request, List<MultipartFile> images, Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
-        int lamp = user.getUserSubInfo().getLamp();
-        if (lamp < 1) return false;
+        if (user.getUserSubInfo().getLamp() < 1) return false;
         UserSubInfo userSubInfo = user.getUserSubInfo();
         userSubInfo.updateLamp(userSubInfo.getLamp() - 1);
-        userSubInfoRepository.save(userSubInfo);
         Help help = helpRepository.save(request.toEntity(user.getOnboarding()));
         helpImageService.addHelpImages(help, images);
         return true;
@@ -52,8 +48,6 @@ public class HelpService {
     public void applyHelp(Long helpId, Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         Help help = HelpServiceUtils.findHelpById(helpRepository, helpId);
-        String title = "새로운 돕기 요청";
-        String content = user.getOnboarding().getName() + "님이 돕고 싶어해요";
         Chat myChat = chatRepository.findByOnboardingAndOpponentId(user.getOnboarding(), help.getOnboarding().getUser().getId());
         Chat opponentChat = chatRepository.findByOnboardingAndOpponentId(help.getOnboarding(), user.getId());
         if (myChat == null) {
@@ -68,8 +62,8 @@ public class HelpService {
         opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, opponentContent, false)));
         myChat.updateToRead();
         opponentChat.updateToUnRead();
-        chatRepository.save(myChat);
-        chatRepository.save(opponentChat);
+        String title = "새로운 돕기 요청";
+        String content = user.getOnboarding().getName() + "님이 돕고 싶어해요";
         try {
             firebaseCloudMessageService.sendMessageTo(help.getOnboarding().getUser().getFcmToken(), title, content);
         } catch (IOException e) {
