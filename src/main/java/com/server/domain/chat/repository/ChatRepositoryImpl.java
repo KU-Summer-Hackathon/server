@@ -28,7 +28,9 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
         return queryFactory.selectFrom(chat).distinct()
                 .where(
                         chat.onboarding.eq(onboarding)
-                ).fetch();
+                )
+                .orderBy(chat.createdAt.desc())
+                .fetch();
     }
 
     @Override
