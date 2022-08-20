@@ -5,6 +5,8 @@ import com.server.domain.chat.Chat;
 import com.server.domain.user.Onboarding;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.server.domain.chat.QChat.chat;
 
 @RequiredArgsConstructor
@@ -19,5 +21,13 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                         chat.onboarding.eq(onboarding),
                         chat.opponentId.eq(opponentId)
                 ).fetchOne();
+    }
+
+    @Override
+    public List<Chat> findChatsByOnboarding(Onboarding onboarding) {
+        return queryFactory.selectFrom(chat).distinct()
+                .where(
+                        chat.onboarding.eq(onboarding)
+                ).fetch();
     }
 }
