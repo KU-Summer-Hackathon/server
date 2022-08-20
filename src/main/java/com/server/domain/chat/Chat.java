@@ -68,4 +68,12 @@ public class Chat extends AuditingTimeEntity {
             }
         }
     }
+
+    public void deleteMessage(Message message) {
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getId().equals(message.getId())) {
+                this.messages.remove(i);
+            }
+        }
+    }
 }

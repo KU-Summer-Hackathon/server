@@ -33,9 +33,13 @@ public class HelpService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
-    public void createHelp(CreateHelpRequestDto request, List<MultipartFile> images, Long userId) {
-        Help help = helpRepository.save(request.toEntity(UserServiceUtils.findUserById(userRepository, userId).getOnboarding()));
+    public boolean createHelp(CreateHelpRequestDto request, List<MultipartFile> images, Long userId) {
+        User user = UserServiceUtils.findUserById(userRepository, userId);
+        int lamp = user.getUserSubInfo().getLamp();
+        if (lamp < 1) return false;
+        Help help = helpRepository.save(request.toEntity(user.getOnboarding()));
         helpImageService.addHelpImages(help, images);
+        return true;
     }
 
     @Transactional
@@ -52,7 +56,7 @@ public class HelpService {
         if (opponentChat == null) {
             opponentChat = chatRepository.save(Chat.of(help.getOnboarding(), user.getId(), false));
         }
-        String myContent = "수락 대기 중입니다.";
+        String myContent = "수락 대기 중입니다";
         String opponentContent = user.getOnboarding().getName() + "님이 돕고 싶어해요";
         myChat.addMessage(messageRepository.save(Message.of(myChat, user.getOnboarding(), help, MessageType.PENDING_HELP, myContent, true)));
         opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, opponentContent, false)));
