@@ -24,7 +24,7 @@ public class UserRetrieveController {
 
     private final UserRetreiveService userRetreiveService;
 
-    @ApiOperation("User - 유저를 조회합니다.")
+    @ApiOperation("User - 유저 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "User - 유저 조회 성공입니다."),
             @ApiResponse(code = 401, message = "유효하지 않은 토큰입니다.", response = ErrorResponse.class),

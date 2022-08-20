@@ -24,7 +24,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation("User - Lamp를 구매합니다.")
+    @ApiOperation("User - 램프를 구매합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "User - Lamp 구매 성공입니다."),
             @ApiResponse(code = 401, message = "유효하지 않은 토큰입니다.", response = ErrorResponse.class),
