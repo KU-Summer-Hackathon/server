@@ -29,7 +29,7 @@ public class HelpRetrieveService {
         return GetHelpsResponse.of(
                 user.getOnboarding().getAddress(),
                 helpRepository.findOtherHelps(user.getOnboarding()).stream()
-                        .map(help -> HelpInfoResponse.of(user.getOnboarding(), help, messageRepository.isRequested(user.getOnboarding(), help)))
+                        .map(help -> HelpInfoResponse.of(help.getOnboarding(), help, messageRepository.isRequested(user.getOnboarding(), help)))
                         .collect(Collectors.toList())
         );
     }
