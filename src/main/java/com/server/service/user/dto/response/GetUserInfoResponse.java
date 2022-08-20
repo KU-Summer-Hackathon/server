@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-public class GetUserRetreiveResponse {
+public class GetUserInfoResponse {
 
     private String name;
 
@@ -22,8 +22,8 @@ public class GetUserRetreiveResponse {
 
     private UserSubInfoResponse userSubInfoResponse;
 
-    public static GetUserRetreiveResponse of(String name, GenderType gender, int age, String address, String imageUrl, UserSubInfoResponse userSubInfoResponse) {
-        return GetUserRetreiveResponse.builder()
+    public static GetUserInfoResponse of(String name, GenderType gender, int age, String address, String imageUrl, UserSubInfoResponse userSubInfoResponse) {
+        return GetUserInfoResponse.builder()
                 .name(name)
                 .gender(gender)
                 .age(age)

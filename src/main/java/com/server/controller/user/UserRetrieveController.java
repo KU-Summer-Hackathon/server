@@ -6,7 +6,7 @@ import com.server.common.success.SuccessCode;
 import com.server.config.interceptor.Auth;
 import com.server.config.resolver.UserId;
 import com.server.service.user.UserRetreiveService;
-import com.server.service.user.dto.response.GetUserRetreiveResponse;
+import com.server.service.user.dto.response.GetUserInfoResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -32,8 +32,8 @@ public class UserRetrieveController {
     })
     @Auth
     @GetMapping("/v1/user")
-    public SuccessResponse<GetUserRetreiveResponse> retrieveUser(@ApiIgnore @UserId Long userId) {
-        return SuccessResponse.success(SuccessCode.GET_USER_SUCCESS, userRetreiveService.retrieveUser(userId));
+    public SuccessResponse<GetUserInfoResponse> retrieveUserInfo(@ApiIgnore @UserId Long userId) {
+        return SuccessResponse.success(SuccessCode.GET_USER_SUCCESS, userRetreiveService.retrieveUserInfo(userId));
     }
 }
 

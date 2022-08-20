@@ -2,7 +2,7 @@ package com.server.service.user;
 
 import com.server.domain.user.User;
 import com.server.domain.user.repository.UserRepository;
-import com.server.service.user.dto.response.GetUserRetreiveResponse;
+import com.server.service.user.dto.response.GetUserInfoResponse;
 import com.server.service.user.dto.response.UserSubInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ public class UserRetreiveService {
 
     private final UserRepository userRepository;
 
-    public GetUserRetreiveResponse retrieveUser(Long userId) {
+    public GetUserInfoResponse retrieveUserInfo(Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
-        return GetUserRetreiveResponse.of(
+        return GetUserInfoResponse.of(
                 user.getOnboarding().getName(),
                 user.getOnboarding().getGender(),
                 user.getOnboarding().getAge(),
