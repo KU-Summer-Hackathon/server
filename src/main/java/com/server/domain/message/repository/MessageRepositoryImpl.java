@@ -24,7 +24,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                         message.sender.eq(sender),
                         message.help.eq(help),
                         message.type.in(MessageType.REQUEST_HELP, MessageType.ACCEPT_HELP, MessageType.PENDING_HELP)
-                ).fetchOne() != null;
+                ).fetch().size() > 0;
     }
 
     @Override
