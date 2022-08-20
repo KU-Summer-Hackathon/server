@@ -66,4 +66,8 @@ public class Message extends AuditingTimeEntity {
     public void updateToAcceptHelp() {
         this.type = MessageType.ACCEPT_HELP;
     }
+
+    public void updateToAcceptedHelp() {
+        this.type = MessageType.ACCEPTED_HELP;
+    }
 }

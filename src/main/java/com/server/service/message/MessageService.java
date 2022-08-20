@@ -36,7 +36,7 @@ public class MessageService {
         Message opponentMessage = messageRepository.findMessageByChatAndHelpAndOnboarding(myChat, myMessage.getHelp(), onboardingRepository.findOnboardingById(myChat.getOpponentId()));
         Chat opponentChat = opponentMessage.getChat();
         myMessage.updateToAcceptHelp();
-        opponentMessage.updateToAcceptHelp();
+        opponentMessage.updateToAcceptedHelp();
         messageRepository.save(myMessage);
         messageRepository.save((opponentMessage));
         myChat.updateMessage(myMessage);
