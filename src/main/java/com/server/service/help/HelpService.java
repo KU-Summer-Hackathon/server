@@ -8,7 +8,9 @@ import com.server.domain.message.Message;
 import com.server.domain.message.MessageType;
 import com.server.domain.message.repository.MessageRepository;
 import com.server.domain.user.User;
+import com.server.domain.user.UserSubInfo;
 import com.server.domain.user.repository.UserRepository;
+import com.server.domain.user.repository.UserSubInfoRepository;
 import com.server.service.firebase.FirebaseCloudMessageService;
 import com.server.service.help.dto.request.CreateHelpRequestDto;
 import com.server.service.user.UserServiceUtils;
@@ -26,6 +28,7 @@ import java.util.List;
 public class HelpService {
 
     private final UserRepository userRepository;
+    private final UserSubInfoRepository userSubInfoRepository;
     private final HelpRepository helpRepository;
     private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
@@ -37,6 +40,9 @@ public class HelpService {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         int lamp = user.getUserSubInfo().getLamp();
         if (lamp < 1) return false;
+        UserSubInfo userSubInfo = user.getUserSubInfo();
+        userSubInfo.updateLamp(userSubInfo.getLamp() - 1);
+        userSubInfoRepository.save(userSubInfo);
         Help help = helpRepository.save(request.toEntity(user.getOnboarding()));
         helpImageService.addHelpImages(help, images);
         return true;
