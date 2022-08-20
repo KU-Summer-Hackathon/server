@@ -17,6 +17,9 @@ public class Onboarding extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "onboarding")
+    private User user;
+
     @Column(length = 30)
     private String name;
 
@@ -27,6 +30,9 @@ public class Onboarding extends AuditingTimeEntity {
     @Column
     private int age;
 
+    @Column(length = 30)
+    private String phoneNumber;
+
     @Column(length = 100)
     private String address;
 
@@ -34,10 +40,12 @@ public class Onboarding extends AuditingTimeEntity {
     private String imageUrl;
 
     @Builder(access = AccessLevel.PACKAGE)
-    public Onboarding(String name, GenderType gender, int age, String address, String imageUrl) {
+    public Onboarding(User user, String name, GenderType gender, int age, String phoneNumber, String address, String imageUrl) {
+        this.user = user;
         this.name = name;
         this.gender = gender;
         this.age = age;
+        this.phoneNumber = phoneNumber;
         this.address = address;
         this.imageUrl = imageUrl;
     }
@@ -45,14 +53,6 @@ public class Onboarding extends AuditingTimeEntity {
     public static Onboarding newInstance() {
         return Onboarding.builder()
                 .build();
-    }
-
-    public void setInfo(String name, GenderType gender, int age, String address, String imageUrl) {
-        this.name = name;
-        this.gender = gender;
-        this.age = age;
-        this.address = address;
-        this.imageUrl = imageUrl;
     }
 }
 
