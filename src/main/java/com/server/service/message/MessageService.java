@@ -28,11 +28,12 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
+    @Transactional
     public void acceptHelp(Long messageId, Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         Message myMessage = messageRepository.findMessageById(messageId);
         Chat myChat = myMessage.getChat();
-        Message opponentMessage = messageRepository.findMessageByHelpAndOnboarding(myMessage.getHelp(), onboardingRepository.findOnboardingById(myChat.getOpponentId()));
+        Message opponentMessage = messageRepository.findMessageByChatAndHelpAndOnboarding(myChat, myMessage.getHelp(), onboardingRepository.findOnboardingById(myChat.getOpponentId()));
         Chat opponentChat = opponentMessage.getChat();
         myMessage.updateToAcceptHelp();
         opponentMessage.updateToAcceptHelp();

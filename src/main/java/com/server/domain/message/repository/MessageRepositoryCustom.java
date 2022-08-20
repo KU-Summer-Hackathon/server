@@ -17,5 +17,5 @@ public interface MessageRepositoryCustom {
 
     Message findMessageById(Long messageId);
 
-    Message findMessageByHelpAndOnboarding(Help help, Onboarding onboarding);
+    Message findMessageByChatAndHelpAndOnboarding(Chat chat, Help help, Onboarding onboarding);
 }

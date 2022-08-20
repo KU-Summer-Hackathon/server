@@ -53,9 +53,10 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     }
 
     @Override
-    public Message findMessageByHelpAndOnboarding(Help help, Onboarding onboarding) {
+    public Message findMessageByChatAndHelpAndOnboarding(Chat chat, Help help, Onboarding onboarding) {
         return queryFactory.selectFrom(message).distinct()
                 .where(
+                        message.chat.ne(chat),
                         message.help.eq(help),
                         message.sender.eq(onboarding)
                 )
