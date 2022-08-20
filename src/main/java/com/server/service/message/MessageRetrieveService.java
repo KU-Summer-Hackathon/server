@@ -1,5 +1,6 @@
 package com.server.service.message;
 
+import com.server.domain.chat.Chat;
 import com.server.domain.chat.repository.ChatRepository;
 import com.server.domain.message.repository.MessageRepository;
 import com.server.domain.user.User;
@@ -33,7 +34,10 @@ public class MessageRetrieveService {
     }
 
     public List<MessageInfoResponse> retrieveMessages(Long chatId) {
-        return messageRepository.findMessagesByChat(chatRepository.findChatById(chatId)).stream()
+        Chat chat = chatRepository.findChatById(chatId);
+        chat.updateToRead();
+        chat = chatRepository.save(chat);
+        return messageRepository.findMessagesByChat(chat).stream()
                 .map(message -> MessageInfoResponse.of(message, message.getHelp(), message.getSender()))
                 .collect(Collectors.toList());
     }
