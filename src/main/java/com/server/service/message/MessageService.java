@@ -1,7 +1,6 @@
 package com.server.service.message;
 
 import com.server.domain.chat.Chat;
-import com.server.domain.chat.repository.ChatRepository;
 import com.server.domain.message.Message;
 import com.server.domain.message.MessageType;
 import com.server.domain.message.repository.MessageRepository;
@@ -10,7 +9,6 @@ import com.server.domain.user.User;
 import com.server.domain.user.UserSubInfo;
 import com.server.domain.user.repository.OnboardingRepository;
 import com.server.domain.user.repository.UserRepository;
-import com.server.domain.user.repository.UserSubInfoRepository;
 import com.server.service.firebase.FirebaseCloudMessageService;
 import com.server.service.user.UserServiceUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +23,7 @@ import java.io.IOException;
 public class MessageService {
 
     private final UserRepository userRepository;
-    private final UserSubInfoRepository userSubInfoRepository;
     private final OnboardingRepository onboardingRepository;
-    private final ChatRepository chatRepository;
     private final MessageRepository messageRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
@@ -40,8 +36,6 @@ public class MessageService {
         Chat opponentChat = opponentMessage.getChat();
         myMessage.updateToAcceptHelp();
         opponentMessage.updateToAcceptedHelp();
-        messageRepository.save(myMessage);
-        messageRepository.save((opponentMessage));
         myChat.updateMessage(myMessage);
         opponentChat.updateMessage(opponentMessage);
         Onboarding opponentOnboarding = onboardingRepository.findOnboardingById(myChat.getOpponentId());
@@ -49,8 +43,6 @@ public class MessageService {
         opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), myMessage.getHelp(), MessageType.PENDING_MISSION, "오늘 하루 어땠는지 물어보기", false)));
         myChat.updateToRead();
         opponentChat.updateToUnRead();
-        chatRepository.save(myChat);
-        chatRepository.save(opponentChat);
         String title = "새로운 돕기 수락";
         String content = user.getOnboarding().getName() + "님이 돕기 요청을 수락했어요";
         try {
@@ -74,12 +66,9 @@ public class MessageService {
         opponentChat.addMessage(opponentCompleteMessage);
         myChat.updateToRead();
         opponentChat.updateToUnRead();
-        chatRepository.save(myChat);
-        chatRepository.save(opponentChat);
         Onboarding opponentOnboarding = opponentChat.getOnboarding();
         UserSubInfo userSubInfo = opponentOnboarding.getUser().getUserSubInfo();
         userSubInfo.updateLamp(userSubInfo.getLamp() + 1);
-        userSubInfoRepository.save(userSubInfo);
         String title = "도와주기 완료";
         String content = "램프 1개가 지급되었어요";
         try {

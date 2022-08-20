@@ -36,7 +36,6 @@ public class MessageRetrieveService {
     public List<MessageInfoResponse> retrieveMessages(Long chatId) {
         Chat chat = chatRepository.findChatById(chatId);
         chat.updateToRead();
-        chat = chatRepository.save(chat);
         return messageRepository.findMessagesByChat(chat).stream()
                 .map(message -> MessageInfoResponse.of(message, message.getHelp(), message.getSender()))
                 .collect(Collectors.toList());
