@@ -33,9 +33,13 @@ public class HelpService {
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Transactional
-    public void createHelp(CreateHelpRequestDto request, List<MultipartFile> images, Long userId) {
-        Help help = helpRepository.save(request.toEntity(UserServiceUtils.findUserById(userRepository, userId).getOnboarding()));
+    public boolean createHelp(CreateHelpRequestDto request, List<MultipartFile> images, Long userId) {
+        User user = UserServiceUtils.findUserById(userRepository, userId);
+        int lamp = user.getUserSubInfo().getLamp();
+        if (lamp < 1) return false;
+        Help help = helpRepository.save(request.toEntity(user.getOnboarding()));
         helpImageService.addHelpImages(help, images);
+        return true;
     }
 
     @Transactional

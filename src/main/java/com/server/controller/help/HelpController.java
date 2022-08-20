@@ -2,6 +2,7 @@ package com.server.controller.help;
 
 import com.server.common.dto.ErrorResponse;
 import com.server.common.dto.SuccessResponse;
+import com.server.common.success.SuccessCode;
 import com.server.config.interceptor.Auth;
 import com.server.config.resolver.UserId;
 import com.server.service.help.HelpService;
@@ -32,12 +33,11 @@ public class HelpController {
     })
     @Auth
     @PostMapping("/v1/help")
-    public SuccessResponse<String> createHelp(CreateHelpRequestDto request,
-                                              @ApiParam(name = "images", value = "도움 요청 이미지 파일", required = true)
-                                              @RequestPart List<MultipartFile> images,
-                                              @ApiIgnore @UserId Long userId) {
-        helpService.createHelp(request, images, userId);
-        return SuccessResponse.SUCCESS;
+    public SuccessResponse<Boolean> createHelp(CreateHelpRequestDto request,
+                                               @ApiParam(name = "images", value = "도움 요청 이미지 파일", required = true)
+                                               @RequestPart List<MultipartFile> images,
+                                               @ApiIgnore @UserId Long userId) {
+        return SuccessResponse.success(SuccessCode.CREATE_HELP_SUCCESS, helpService.createHelp(request, images, userId));
     }
 
     @ApiOperation("Help - 돕기를 신청합니다.")
