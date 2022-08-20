@@ -1,10 +1,12 @@
 package com.server.service.help;
 
+import com.server.domain.chat.Chat;
+import com.server.domain.chat.repository.ChatRepository;
 import com.server.domain.help.Help;
 import com.server.domain.help.repository.HelpRepository;
-import com.server.domain.push.Push;
-import com.server.domain.push.PushType;
-import com.server.domain.push.repository.PushRepository;
+import com.server.domain.message.Message;
+import com.server.domain.message.MessageType;
+import com.server.domain.message.repository.MessageRepository;
 import com.server.domain.user.User;
 import com.server.domain.user.repository.UserRepository;
 import com.server.service.firebase.FirebaseCloudMessageService;
@@ -25,7 +27,8 @@ public class HelpService {
 
     private final UserRepository userRepository;
     private final HelpRepository helpRepository;
-    private final PushRepository pushRepository;
+    private final ChatRepository chatRepository;
+    private final MessageRepository messageRepository;
     private final HelpImageService helpImageService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
@@ -41,11 +44,26 @@ public class HelpService {
         Help help = HelpServiceUtils.findHelpById(helpRepository, helpId);
         String title = "새로운 돕기 요청";
         String content = user.getOnboarding().getName() + "님이 돕고 싶어해요";
+        Chat myChat = chatRepository.findByOnboardingAndOpponentId(user.getOnboarding(), help.getOnboarding().getUser().getId());
+        Chat opponentChat = chatRepository.findByOnboardingAndOpponentId(help.getOnboarding(), user.getId());
+        if (myChat == null) {
+            myChat = chatRepository.save(Chat.of(user.getOnboarding(), help.getOnboarding().getUser().getId(), true));
+        }
+        if (opponentChat == null) {
+            opponentChat = chatRepository.save(Chat.of(help.getOnboarding(), user.getId(), false));
+        }
+        String myContent = help.getOnboarding().getName() + "님의 답변을 기다리고 있어요.";
+        String opponentContent = user.getOnboarding().getName() + "님이 돕고 싶어해요";
+        myChat.addMessage(messageRepository.save(Message.of(myChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, myContent, true)));
+        opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, opponentContent, false)));
+        myChat.updateToRead();
+        opponentChat.updateToUnRead();
+        chatRepository.save(myChat);
+        chatRepository.save(opponentChat);
         try {
             firebaseCloudMessageService.sendMessageTo(help.getOnboarding().getUser().getFcmToken(), title, content);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        pushRepository.save(Push.of(help.getOnboarding(), help, user.getId(), PushType.HELP, content, false, false));
     }
 }

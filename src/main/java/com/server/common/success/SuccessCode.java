@@ -21,7 +21,9 @@ public enum SuccessCode {
 
     GET_HELPS_SUCCESS(OK, "Help - 도움 조회 성공입니다."),
     GET_HELP_SUCCESS(OK, "Help - 돕기 신청할 도움 조회 성공입니다."),
+
     GET_PUSHES_SUCCESS(OK, "Messages - 알림 조회 성공입니다."),
+    GET_PUSH_SUCCESS(OK, "Messages - 알림 상세 조회 성공입니다."),
     /**
      * 201 CREATED
      */
