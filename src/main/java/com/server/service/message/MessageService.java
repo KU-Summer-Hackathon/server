@@ -49,7 +49,7 @@ public class MessageService {
         chatRepository.save(myChat);
         chatRepository.save(opponentChat);
         String title = "새로운 돕기 수락";
-        String content = user.getOnboarding().getName() + "님이 돕기 요청을 수락했습니다.";
+        String content = user.getOnboarding().getName() + "님이 돕기 요청을 수락했어요";
         try {
             firebaseCloudMessageService.sendMessageTo(opponentOnboarding.getUser().getFcmToken(), title, content);
         } catch (IOException e) {
