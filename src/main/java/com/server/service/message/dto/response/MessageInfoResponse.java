@@ -16,7 +16,7 @@ public class MessageInfoResponse {
 
     private Long messageId;
 
-    private MessageType type;
+    private int type;
 
     private String helpContent;
 
@@ -35,7 +35,7 @@ public class MessageInfoResponse {
     public static MessageInfoResponse of(Message message, Help help, Onboarding onboarding) {
         return MessageInfoResponse.builder()
                 .messageId(message.getId())
-                .type(message.getType())
+                .type(transferTypeToInt(message.getType()))
                 .helpContent(help.getContent())
                 .messageContent(message.getContent())
                 .userImageUrl(onboarding.getImageUrl())
@@ -44,5 +44,16 @@ public class MessageInfoResponse {
                 .userAge(onboarding.getAge())
                 .userPhoneNumber(onboarding.getPhoneNumber())
                 .build();
+    }
+
+    private static int transferTypeToInt(MessageType type) {
+        if (type == MessageType.ACCEPTED_HELP) return 0;
+        if (type == MessageType.ACCEPT_HELP) return 1;
+        if (type == MessageType.PENDING_HELP) return 2;
+        if (type == MessageType.CHECK_HELP) return 3;
+        if (type == MessageType.COMPLETE_HELP) return 4;
+        if (type == MessageType.PENDING_MISSION) return 5;
+        if (type == MessageType.REQUEST_HELP) return 6;
+        return -1;
     }
 }
