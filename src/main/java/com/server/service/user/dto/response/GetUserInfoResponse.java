@@ -1,6 +1,7 @@
 package com.server.service.user.dto.response;
 
 import com.server.domain.user.GenderType;
+import com.server.domain.user.Onboarding;
 import lombok.*;
 
 @ToString
@@ -22,13 +23,13 @@ public class GetUserInfoResponse {
 
     private UserSubInfoResponse userSubInfoResponse;
 
-    public static GetUserInfoResponse of(String name, GenderType gender, int age, String address, String imageUrl, UserSubInfoResponse userSubInfoResponse) {
+    public static GetUserInfoResponse of(Onboarding onboarding, UserSubInfoResponse userSubInfoResponse) {
         return GetUserInfoResponse.builder()
-                .name(name)
-                .gender(gender)
-                .age(age)
-                .address(address)
-                .imageUrl(imageUrl)
+                .name(onboarding.getName())
+                .gender(onboarding.getGender())
+                .age(onboarding.getAge())
+                .address(onboarding.getAddress())
+                .imageUrl(onboarding.getImageUrl())
                 .userSubInfoResponse(userSubInfoResponse)
                 .build();
     }

@@ -17,13 +17,6 @@ public class UserRetreiveService {
 
     public GetUserInfoResponse retrieveUserInfo(Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
-        return GetUserInfoResponse.of(
-                user.getOnboarding().getName(),
-                user.getOnboarding().getGender(),
-                user.getOnboarding().getAge(),
-                user.getOnboarding().getAddress(),
-                user.getOnboarding().getImageUrl(),
-                UserSubInfoResponse.of(user.getUserSubInfo())
-        );
+        return GetUserInfoResponse.of(user.getOnboarding(), UserSubInfoResponse.of(user.getUserSubInfo()));
     }
 }

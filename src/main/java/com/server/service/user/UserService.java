@@ -29,11 +29,7 @@ public class UserService {
     @Transactional
     public void updateLamp(UpdateLampDto request, Long userId) {
         User user = UserServiceUtils.findUserById(userRepository, userId);
-
         UserSubInfo userSubInfo = user.getUserSubInfo();
-        int currentLamp = userSubInfo.getLamp();
-
-        userSubInfo.updateLamp(currentLamp + request.getLampCnt());
-        userSubInfoRepository.save(userSubInfo);
+        userSubInfo.updateLamp(userSubInfo.getLamp() + request.getLampCnt());
     }
 }
