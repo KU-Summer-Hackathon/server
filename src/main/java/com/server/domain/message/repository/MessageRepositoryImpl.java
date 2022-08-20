@@ -42,7 +42,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
     public List<Message> findMessagesByChat(Chat chat) {
         return queryFactory.selectFrom(message).distinct()
                 .where(message.chat.eq(chat))
-                .orderBy(message.createdAt.desc())
+                .orderBy(message.createdAt.asc())
                 .fetch();
     }
 
@@ -60,6 +60,18 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                         message.chat.ne(chat),
                         message.help.eq(help),
                         message.sender.eq(onboarding)
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public Message findMessageByChatAndHelpAndOnboardingAndType(Chat chat, Help help, Onboarding onboarding, MessageType type) {
+        return queryFactory.selectFrom(message).distinct()
+                .where(
+                        message.chat.ne(chat),
+                        message.help.eq(help),
+                        message.sender.eq(onboarding),
+                        message.type.eq(type)
                 )
                 .fetchOne();
     }

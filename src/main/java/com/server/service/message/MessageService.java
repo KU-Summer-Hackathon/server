@@ -39,8 +39,8 @@ public class MessageService {
         myChat.updateMessage(myMessage);
         opponentChat.updateMessage(opponentMessage);
         Onboarding opponentOnboarding = onboardingRepository.findOnboardingById(myChat.getOpponentId());
-        myChat.addMessage(messageRepository.save(Message.of(myChat, user.getOnboarding(), myMessage.getHelp(), MessageType.CHECK_HELP, "오늘 하루 어땠는지 물어보기", true)));
-        opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), myMessage.getHelp(), MessageType.PENDING_MISSION, "오늘 하루 어땠는지 물어보기", false)));
+        myChat.addMessage(messageRepository.save(Message.of(myChat, opponentChat.getOnboarding(), myMessage.getHelp(), MessageType.CHECK_HELP, "오늘 하루 어땠는지 물어보기", true)));
+        opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, opponentChat.getOnboarding(), myMessage.getHelp(), MessageType.PENDING_MISSION, "오늘 하루 어땠는지 물어보기", false)));
         myChat.updateToRead();
         opponentChat.updateToUnRead();
         String title = "새로운 돕기 수락";
@@ -57,7 +57,7 @@ public class MessageService {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         Message myMessage = messageRepository.findMessageById(messageId);
         Chat myChat = myMessage.getChat();
-        Message opponentMessage = messageRepository.findMessageByChatAndHelpAndOnboarding(myChat, myMessage.getHelp(), onboardingRepository.findOnboardingById(myChat.getOpponentId()));
+        Message opponentMessage = messageRepository.findMessageByChatAndHelpAndOnboardingAndType(myChat, myMessage.getHelp(), onboardingRepository.findOnboardingById(myChat.getOpponentId()), MessageType.ACCEPTED_HELP);
         Chat opponentChat = opponentMessage.getChat();
         myChat.deleteMessage(myMessage);
         Message myCompleteMessage = messageRepository.save(Message.of(myChat, myChat.getOnboarding(), myMessage.getHelp(), MessageType.COMPLETE_HELP, "도움 해결 완료!", true));
