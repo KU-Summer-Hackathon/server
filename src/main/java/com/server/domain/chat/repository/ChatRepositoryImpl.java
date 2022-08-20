@@ -30,4 +30,11 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                         chat.onboarding.eq(onboarding)
                 ).fetch();
     }
+
+    @Override
+    public Chat findChatById(Long chatId) {
+        return queryFactory.selectFrom(chat).distinct()
+                .where(chat.id.eq(chatId))
+                .fetchOne();
+    }
 }

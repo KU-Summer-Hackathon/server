@@ -8,6 +8,8 @@ import com.server.domain.message.MessageType;
 import com.server.domain.user.Onboarding;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.server.domain.message.QMessage.message;
 
 @RequiredArgsConstructor
@@ -33,5 +35,13 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                 )
                 .orderBy(message.createdAt.desc())
                 .fetchOne();
+    }
+
+    @Override
+    public List<Message> findMessagesByChat(Chat chat) {
+        return queryFactory.selectFrom(message).distinct()
+                .where(message.chat.eq(chat))
+                .orderBy(message.createdAt.desc())
+                .fetch();
     }
 }

@@ -25,6 +25,7 @@ public enum SuccessCode {
     GET_PUSHES_SUCCESS(OK, "Messages - 알림 조회 성공입니다."),
     GET_PUSH_SUCCESS(OK, "Messages - 알림 상세 조회 성공입니다."),
     GET_CHATS_SUCCESS(OK, "Message - 채팅 목록 조회 성공입니다."),
+    GET_MESSAGES_SUCCESS(OK, "Message - 채팅 내용 조회 성공입니다."),
     /**
      * 201 CREATED
      */

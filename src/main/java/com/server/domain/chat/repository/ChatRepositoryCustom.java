@@ -10,4 +10,6 @@ public interface ChatRepositoryCustom {
     Chat findByOnboardingAndOpponentId(Onboarding onboarding, Long opponentId);
 
     List<Chat> findChatsByOnboarding(Onboarding onboarding);
+
+    Chat findChatById(Long chatId);
 }

@@ -6,6 +6,7 @@ import com.server.domain.user.User;
 import com.server.domain.user.repository.OnboardingRepository;
 import com.server.domain.user.repository.UserRepository;
 import com.server.service.message.dto.response.ChatInfoResponse;
+import com.server.service.message.dto.response.MessageInfoResponse;
 import com.server.service.user.UserServiceUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,12 @@ public class MessageRetrieveService {
         User user = UserServiceUtils.findUserById(userRepository, userId);
         return chatRepository.findChatsByOnboarding(user.getOnboarding()).stream()
                 .map(chat -> ChatInfoResponse.of(chat, onboardingRepository.findOnboardingById(chat.getOpponentId()), messageRepository.findRecentMessage(chat)))
+                .collect(Collectors.toList());
+    }
+
+    public List<MessageInfoResponse> retrieveMessages(Long chatId) {
+        return messageRepository.findMessagesByChat(chatRepository.findChatById(chatId)).stream()
+                .map(message -> MessageInfoResponse.of(message, message.getHelp(), message.getSender()))
                 .collect(Collectors.toList());
     }
 }
