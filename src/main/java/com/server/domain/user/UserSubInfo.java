@@ -39,4 +39,8 @@ public class UserSubInfo extends AuditingTimeEntity {
     public static UserSubInfo newInstance() {
         return new UserSubInfo(100, 0, 0, 0);
     }
+
+    public void updateLamp(int lamp) {
+        this.lamp = lamp;
+    }
 }
