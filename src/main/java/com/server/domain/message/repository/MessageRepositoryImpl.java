@@ -21,7 +21,7 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                 .where(
                         message.sender.eq(sender),
                         message.help.eq(help),
-                        message.type.in(MessageType.REQUEST_HELP, MessageType.ACCEPT_HELP, MessageType.REJECT_HELP)
+                        message.type.in(MessageType.REQUEST_HELP, MessageType.ACCEPT_HELP, MessageType.PENDING_HELP)
                 ).fetchOne() != null;
     }
 

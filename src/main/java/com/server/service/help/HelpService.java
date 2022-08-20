@@ -52,9 +52,9 @@ public class HelpService {
         if (opponentChat == null) {
             opponentChat = chatRepository.save(Chat.of(help.getOnboarding(), user.getId(), false));
         }
-        String myContent = help.getOnboarding().getName() + "님의 답변을 기다리고 있어요.";
+        String myContent = "수락 대기 중입니다.";
         String opponentContent = user.getOnboarding().getName() + "님이 돕고 싶어해요";
-        myChat.addMessage(messageRepository.save(Message.of(myChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, myContent, true)));
+        myChat.addMessage(messageRepository.save(Message.of(myChat, user.getOnboarding(), help, MessageType.PENDING_HELP, myContent, true)));
         opponentChat.addMessage(messageRepository.save(Message.of(opponentChat, user.getOnboarding(), help, MessageType.REQUEST_HELP, opponentContent, false)));
         myChat.updateToRead();
         opponentChat.updateToUnRead();
