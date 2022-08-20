@@ -60,4 +60,12 @@ public class Chat extends AuditingTimeEntity {
     public void addMessage(Message message) {
         this.messages.add(message);
     }
+
+    public void updateMessage(Message message) {
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getId().equals(message.getId())) {
+                this.messages.set(i, message);
+            }
+        }
+    }
 }

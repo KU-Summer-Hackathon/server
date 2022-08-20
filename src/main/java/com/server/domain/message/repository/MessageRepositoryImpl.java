@@ -44,4 +44,21 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
                 .orderBy(message.createdAt.desc())
                 .fetch();
     }
+
+    @Override
+    public Message findMessageById(Long messageId) {
+        return queryFactory.selectFrom(message).distinct()
+                .where(message.id.eq(messageId))
+                .fetchOne();
+    }
+
+    @Override
+    public Message findMessageByHelpAndOnboarding(Help help, Onboarding onboarding) {
+        return queryFactory.selectFrom(message).distinct()
+                .where(
+                        message.help.eq(help),
+                        message.sender.eq(onboarding)
+                )
+                .fetchOne();
+    }
 }

@@ -14,4 +14,8 @@ public interface MessageRepositoryCustom {
     Message findRecentMessage(Chat chat);
 
     List<Message> findMessagesByChat(Chat chat);
+
+    Message findMessageById(Long messageId);
+
+    Message findMessageByHelpAndOnboarding(Help help, Onboarding onboarding);
 }
