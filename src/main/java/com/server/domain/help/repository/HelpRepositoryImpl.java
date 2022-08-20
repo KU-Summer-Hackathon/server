@@ -15,6 +15,14 @@ public class HelpRepositoryImpl implements HelpRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public Help findHelpById(Long helpId) {
+        return queryFactory
+                .selectFrom(help).distinct()
+                .where(help.id.eq(helpId))
+                .fetchOne();
+    }
+
+    @Override
     public List<Help> findOtherHelps(Onboarding onboarding) {
         return queryFactory
                 .selectFrom(help).distinct()
