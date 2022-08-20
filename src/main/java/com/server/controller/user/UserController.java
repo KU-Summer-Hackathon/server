@@ -31,7 +31,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생하였습니다.", response = ErrorResponse.class)
     })
     @Auth
-    @PutMapping("/v1/user/buy")
+    @PutMapping("/v1/user/lamp")
     public SuccessResponse<String> updateLamp(@RequestBody UpdateLampDto request,
                                               @ApiIgnore @UserId Long userId) {
         userService.updateLamp(request, userId);
