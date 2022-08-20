@@ -33,4 +33,19 @@ public class MessageController {
         messageService.acceptHelp(messageId, userId);
         return SuccessResponse.SUCCESS;
     }
+
+    @ApiOperation("Message - 도움을 완료합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Message - 도움 완료 성공입니다."),
+            @ApiResponse(code = 401, message = "유효하지 않은 토큰입니다.", response = ErrorResponse.class),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생하였습니다.", response = ErrorResponse.class)
+    })
+    @Auth
+    @PostMapping("/v1/message/{messageId}/help/complete")
+    public SuccessResponse<String> completeHelp(@ApiParam(name = "messageId", value = "완료할 Message id", required = true)
+                                                @PathVariable Long messageId,
+                                                @ApiIgnore @UserId Long userId) {
+        messageService.completeHelp(messageId, userId);
+        return SuccessResponse.SUCCESS;
+    }
 }

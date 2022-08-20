@@ -5,7 +5,7 @@ public enum MessageType {
     ACCEPT_HELP,
     ACCEPTED_HELP,
     PENDING_HELP,
-    REQUEST_MISSION,
-    ACCEPT_MISSION,
+    CHECK_HELP,
+    COMPLETE_HELP,
     PENDING_MISSION
 }
