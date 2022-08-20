@@ -29,12 +29,13 @@ public class MessageRepositoryImpl implements MessageRepositoryCustom {
 
     @Override
     public Message findRecentMessage(Chat chat) {
-        return queryFactory.selectFrom(message).distinct()
+        List<Message> messages = queryFactory.selectFrom(message).distinct()
                 .where(
                         message.chat.eq(chat)
                 )
                 .orderBy(message.createdAt.desc())
-                .fetchOne();
+                .fetch();
+        return messages.get(0);
     }
 
     @Override
