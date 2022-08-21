@@ -29,6 +29,7 @@ public class HelpRepositoryImpl implements HelpRepositoryCustom {
                 .where(
                         help.onboarding.ne(onboarding)
                 )
+                .orderBy(help.createdAt.desc())
                 .fetch();
     }
 }
