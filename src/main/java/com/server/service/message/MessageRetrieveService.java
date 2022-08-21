@@ -33,6 +33,7 @@ public class MessageRetrieveService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public List<MessageInfoResponse> retrieveMessages(Long chatId) {
         Chat chat = chatRepository.findChatById(chatId);
         chat.updateToRead();
